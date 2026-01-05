@@ -113,12 +113,46 @@ The paper measures abstention rate - how often models refuse to answer when cont
 | Tool | Category | Source |
 |------|----------|--------|
 | UnScientify | Uncertainty detection | arXiv:2307.14236 |
-| HedgeHog | Uncertainty detection | HuggingFace, GitHub |
 | RAGAS | Post-retrieval RAG evaluation | ragas.io |
 | TruLens | Post-retrieval RAG evaluation | trulens.org |
 | Protecto.ai | Privacy/Security | protecto.ai |
 | Adlib | Document accuracy | adlibsoftware.com |
 | Self-RAG | Runtime reflection | arXiv:2310.11511 |
+
+---
+
+## "Why Language Models Hallucinate" (2025)
+
+**Citation:** Kalai, A.T., Nachum, O., Vempala, S.S., & Zhang, E. (2025). "Why Language Models Hallucinate." arXiv:2509.04664
+
+**Source:** https://arxiv.org/abs/2509.04664
+
+**Authors:** OpenAI (Kalai, Nachum, Zhang) + Georgia Tech (Vempala)
+
+**Relevance:** Theoretical analysis of why hallucinations persist through post-training. Complements Clarity Gate's focus on document quality as an upstream cause.
+
+**Key findings:**
+
+1. **Evaluation incentives cause hallucinations to persist:**
+> "Language models hallucinate because the training and evaluation procedures reward guessing over acknowledging uncertainty"
+
+2. **Binary grading penalizes abstention (Table 2):**
+Analysis of 10 major benchmarks (GPQA, MMLU-Pro, SWE-bench, etc.) shows virtually all use binary scoring where IDK receives zero credit.
+
+3. **Mathematical relationship:**
+> "(generative error rate) ≳ 2 × (IIV misclassification rate)"
+
+4. **Proposed solution:** Explicit confidence thresholds in evaluation prompts:
+> "Answer only if you are >t confident, since mistakes are penalized t/(1-t) points, while correct answers receive 1 point, and an answer of 'I don't know' receives 0 points."
+
+**Connection to Clarity Gate:**
+- Their work: Evaluations reward guessing → models don't abstain
+- Our work: Documents hide uncertainty → models can't tell when to abstain
+- Both address upstream factors before retrieval/generation
+
+**Inline citation in post:** "Confident plausible falsehoods" is what I started calling them (related to what Kalai et al. term "plausible falsehoods"[^6])...
+
+**Footnote [^6]:** Kalai, Nachum, Vempala & Zhang (2025), "Why Language Models Hallucinate," arXiv:2509.04664. They define hallucinations as "plausible falsehoods" and prove mathematically that calibrated language models will inevitably produce them.
 
 ---
 
