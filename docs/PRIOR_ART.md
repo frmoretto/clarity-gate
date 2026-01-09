@@ -1,7 +1,7 @@
 # Clarity Gate Prior Art
 
-**Version:** 1.0  
-**Last Updated:** 2025-12-21
+**Version:** 1.1  
+**Last Updated:** 2026-01-05
 
 ---
 
@@ -11,6 +11,8 @@ Clarity Gate builds on proven patterns. This document maps the landscape of exis
 
 **Key principle:** We're not claiming to invent pre-ingestion gates. We're applying proven patterns to epistemic quality, open-source.
 
+**Verification note:** Tool landscape validated via Perplexity Deep Research (January 2026). See changelog for details.
+
 ---
 
 ## The Gap Matrix
@@ -18,8 +20,8 @@ Clarity Gate builds on proven patterns. This document maps the landscape of exis
 | Stage | Privacy/Security | Accuracy/Compliance | Epistemic Quality |
 |-------|------------------|---------------------|-------------------|
 | **Pre-ingestion** | ✅ Protecto.ai, OWASP | ✅ Adlib, Pharma QMS | ❌ **Gap** |
-| **Detection** | — | — | ✅ UnScientify, HedgeHog |
-| **Post-retrieval** | — | — | ✅ RAGAS, TruLens |
+| **Detection** | — | — | ✅ UnScientify, HedgeHunter (academic) |
+| **Post-retrieval** | — | — | ✅ RAGAS, TruLens, LOKI, RagChecker |
 | **Runtime** | — | — | ✅ Self-RAG |
 
 **The gap:** To the best of our knowledge, no open-source system enforces epistemic quality at pre-ingestion.
@@ -98,20 +100,30 @@ Clarity Gate builds on proven patterns. This document maps the landscape of exis
 
 ---
 
-### HedgeHog
+### HedgeHunter (2010)
 
-**Source:** HuggingFace (jeniakim/hedgehog)
+**Paper:** Clausen, CoNLL-2010 Shared Task (W10-3017)
+
+**Author:** David Clausen, Stanford University
 
 **Capabilities:**
-- BERT-based hedge detection
-- Token-level classification
-- F1 score: ~0.84-0.90 per class
+- Two-stage hedge detection: (1) Hedge cue detection, (2) Uncertainty classification
+- Training data: Wikipedia + biomedical abstracts
+- High precision hedge detection for downstream IE tasks
 
-**What it does:** Detects hedging language ("may," "might," "possibly")
+**What it does:** Token-level hedge cue detection and scope classification
 
 **What it doesn't do:** Determine if hedging is missing where needed
 
-**Status:** Open-source, model available
+**Status:** Academic research tool, not maintained, no downloadable package
+
+**Note on "HedgeHog" naming confusion:** Multiple unrelated projects use similar names:
+- HedgeHog (wearable sensor platform) — motion tracking hardware
+- hedgehog-qa (Haskell testing library) — property-based testing
+- HedgePeer (2022 dataset) — benchmark corpus, not a tool
+- Various DeFi/trading bots
+
+None of these are NLP uncertainty detection tools. HedgeHunter (2010) is the primary academic system for hedge detection.
 
 ---
 
@@ -141,14 +153,86 @@ Clarity Gate builds on proven patterns. This document maps the landscape of exis
 
 ---
 
+### HedgePeer Dataset (2022)
+
+**Paper:** Ghosal et al., ACM SIGMOD 2022
+
+**Type:** Hedge detection benchmark corpus
+
+**Size:** 5x larger than previous hedge detection datasets
+
+**Purpose:** Enable domain adaptation across scientific domains
+
+**Status:** Dataset for training/evaluation, not a deployable tool (22+ citations)
+
+---
+
 ## Detection vs. Enforcement
 
 | Tool Type | Question Answered |
 |-----------|-------------------|
-| **Detection** (UnScientify, HedgeHog) | "Is uncertainty expressed?" |
+| **Detection** (UnScientify, HedgeHunter) | "Is uncertainty expressed?" |
 | **Enforcement** (Clarity Gate) | "Should uncertainty be expressed but isn't?" |
 
 This distinction is the core of Clarity Gate's contribution.
+
+---
+
+## Modern Fact-Checking Tools (2024-2025)
+
+These tools exist but operate **post-ingestion** or **post-retrieval**, not at the pre-ingestion gate:
+
+### LOKI (COLING 2025)
+
+**Focus:** Fact verification with checkworthiness assessment
+
+**Stage:** Post-retrieval evaluation
+
+**Limitation:** Evaluates claims after they're in the system
+
+---
+
+### FIRE (arXiv:2411.00784)
+
+**Focus:** Iterative fact-checking framework
+
+**Stage:** Post-retrieval, iterative refinement
+
+**Limitation:** Operates on generated outputs, not source documents
+
+---
+
+### RagChecker (arXiv:2408.08067)
+
+**Focus:** Diagnostic framework for RAG pipeline issues
+
+**Stage:** Post-retrieval evaluation
+
+**Limitation:** Diagnoses problems after retrieval, doesn't prevent them
+
+---
+
+### Veracity (arXiv:2506.15794)
+
+**Focus:** Open-source fact-checking system
+
+**Stage:** Claim verification against external sources
+
+**Limitation:** Requires external evidence corpus, post-hoc verification
+
+---
+
+### Gap Confirmation
+
+These modern tools validate the gap Clarity Gate addresses:
+
+| Tool | Pre-ingestion? | Epistemic enforcement? |
+|------|----------------|------------------------|
+| LOKI | ❌ | ❌ (fact-checking) |
+| FIRE | ❌ | ❌ (fact-checking) |
+| RagChecker | ❌ | ❌ (diagnostic) |
+| Veracity | ❌ | ❌ (fact-checking) |
+| **Clarity Gate** | ✅ | ✅ |
 
 ---
 
@@ -299,9 +383,9 @@ Layer 0: AI Execution
 | Component | Status |
 |-----------|--------|
 | Pre-ingestion gate pattern | ✅ Proven (Adlib, pharma QMS) |
-| Epistemic detection | ✅ Proven (UnScientify, HedgeHog) |
-| Fact-checking pipelines | ✅ Proven (FEVER, ClaimBuster) |
-| Post-retrieval evaluation | ✅ Proven (RAGAS, TruLens, Self-RAG) |
+| Epistemic detection | ✅ Proven (UnScientify, HedgeHunter — academic only) |
+| Fact-checking pipelines | ✅ Proven (FEVER, ClaimBuster, LOKI, FIRE) |
+| Post-retrieval evaluation | ✅ Proven (RAGAS, TruLens, RagChecker, Self-RAG) |
 | **Pre-ingestion epistemic enforcement** | ❌ Gap |
 | **Open-source accessibility** | ❌ Gap |
 
@@ -320,11 +404,16 @@ Layer 0: AI Execution
 ### Academic (Stable)
 
 - UnScientify: arXiv:2307.14236 (Ningrum et al., 2023)
-- HedgeHog: HuggingFace jeniakim/hedgehog
+- HedgeHunter: CoNLL-2010 W10-3017 (Clausen, 2010)
+- HedgePeer: ACM SIGMOD 2022 (Ghosal et al., 2022)
 - FEVER: fever.ai (Thorne et al., 2018)
 - Self-RAG: arXiv:2310.11511 (Asai et al., 2023)
 - BioScope: Vincze et al., 2008
 - FactBank: Sauri & Pustejovsky, 2009
+- LOKI: COLING 2025
+- FIRE: arXiv:2411.00784
+- RagChecker: arXiv:2408.08067
+- Veracity: arXiv:2506.15794
 
 ### Standards (Stable)
 
@@ -338,3 +427,4 @@ Layer 0: AI Execution
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2025-12-21 | Initial prior art landscape |
+| 1.1 | 2026-01-05 | HedgeHog → HedgeHunter (corrected after Perplexity Deep Research revealed no NLP tool named "HedgeHog" exists). Added modern fact-checking tools (LOKI, FIRE, RagChecker, Veracity) with gap confirmation table. Added HedgePeer dataset. Added naming confusion note. |

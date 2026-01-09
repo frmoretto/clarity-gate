@@ -85,6 +85,51 @@ For Cursor, Windsurf, or other AI tools, extract the 9 verification points into 
 
 ---
 
+## Validators (npm / PyPI)
+
+Validate `.sot` and `.cgd` files programmatically or in CI/CD pipelines:
+
+**npm:**
+```bash
+# Install
+npm install -g sot-validator cgd-validator
+
+# Or use directly
+npx sot-validator document.sot
+npx cgd-validator document.cgd
+
+# CI/CD (quick pass/fail)
+npx sot-verify docs/*.sot
+npx cgd-verify docs/*.cgd
+```
+
+**PyPI:**
+```bash
+# Install
+pip install sot-validator cgd-validator
+
+# Validate
+sot-validator document.sot
+cgd-validator document.cgd
+
+# CI/CD (quick pass/fail)
+sot-verify docs/*.sot
+cgd-verify docs/*.cgd
+```
+
+**Packages:**
+
+| Package | npm | PyPI | Purpose |
+|---------|-----|------|--------|
+| sot-validator | [npm](https://www.npmjs.com/package/sot-validator) | [PyPI](https://pypi.org/project/sot-validator/) | Detailed validation with warnings |
+| sot-verify | [npm](https://www.npmjs.com/package/sot-verify) | [PyPI](https://pypi.org/project/sot-verify/) | Quick pass/fail for CI/CD |
+| cgd-validator | [npm](https://www.npmjs.com/package/cgd-validator) | [PyPI](https://pypi.org/project/cgd-validator/) | Detailed validation with warnings |
+| cgd-verify | [npm](https://www.npmjs.com/package/cgd-verify) | [PyPI](https://pypi.org/project/cgd-verify/) | Quick pass/fail for CI/CD |
+
+See [FILE_FORMAT_SPEC.md](docs/FILE_FORMAT_SPEC.md) for the complete `.sot` and `.cgd` format specification.
+
+---
+
 ## Two Modes
 
 **Verify Mode (default):**
