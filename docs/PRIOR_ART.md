@@ -1,7 +1,7 @@
 # Clarity Gate Prior Art
 
 **Version:** 1.1  
-**Last Updated:** 2026-01-05
+**Last Updated:** 2026-01-13
 
 ---
 
@@ -368,11 +368,15 @@ These modern tools validate the gap Clarity Gate addresses:
 
 ```
 Layer 4: Human Strategic Oversight
-Layer 3: AI Behavior Verification (PETRI, BLOOM, behavioral evals)
+Layer 3: AI Behavior Verification (PETRI, BLOOM, red-teaming)
 Layer 2: Input/Context Verification  <-- Clarity Gate
 Layer 1: Deterministic Boundaries (rate limits, guardrails)
 Layer 0: AI Execution
 ```
+
+**Layer 3 Tools:**
+- [PETRI](https://anthropic.com/research/petri-open-source-auditing) — Anthropic's open-source auditing tool for exploring model behaviors via multi-turn conversations
+- [BLOOM](https://anthropic.com/research/bloom) — Anthropic's automated behavioral evaluation framework for frontier models
 
 **Key insight:** A perfectly aligned model (Layer 3) can confidently produce unsafe outputs from unsafe context (Layer 2). Alignment doesn't inoculate against misleading information.
 

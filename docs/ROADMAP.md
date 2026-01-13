@@ -1,7 +1,7 @@
 # Clarity Gate Roadmap
 
-**Version:** 1.2
-**Last Updated:** 2025-12-31
+**Version:** 1.4
+**Last Updated:** 2026-01-13
 
 ---
 
@@ -15,9 +15,10 @@ Clarity Gate development follows a phased approach, starting with the highest-va
 
 | Phase | Focus | Status |
 |-------|-------|--------|
-| **Phase 1** | Internal consistency checks | ✅ Ready |
-| **Phase 2** | External verification hooks | 🔜 Planned |
-| **Phase 3** | Confidence scoring & optimization | 🔜 Planned |
+| **Phase 1** | Internal consistency checks (Claude skill) | ✅ Ready |
+| **Phase 2** | npm/PyPI validators for CI/CD | 🔜 Planned |
+| **Phase 3** | External verification hooks | 🔜 Planned |
+| **Phase 4** | Confidence scoring & optimization | 🔜 Planned |
 
 ---
 
@@ -33,24 +34,24 @@ Clarity Gate development follows a phased approach, starting with the highest-va
 | Temporal coherence detection | ✅ Ready (v1.5) | Date validation, chronology checks |
 | Externally verifiable claims | ✅ Ready (v1.5) | Pricing, statistics, competitor claim flagging |
 | Two-Round HITL verification | ✅ Ready (v1.6) | Round A (derived data) + Round B (true verification) |
-| Claude skill implementation | ✅ Ready | SKILL.md for Claude Desktop/Code |
+| Claude skill implementation | ✅ Ready (v2.0) | SKILL.md with agentskills.io compliance |
 | Internal consistency detection | ✅ Ready | Figure vs. text, abstract vs. body |
 | HITL protocol | ✅ Ready | Intelligent routing to human review |
 | Output format specification | ✅ Ready | YAML-based findings report |
 
 ### Deliverables
 
-- `SKILL.md` -- Claude skill for direct use
-- `docs/ARCHITECTURE.md` -- Full system documentation
-- `docs/PRIOR_ART.md` -- Landscape analysis
-- `examples/` -- Real-world verification examples
+- `skills/clarity-gate/SKILL.md` — Claude skill for direct use (v2.0)
+- `docs/ARCHITECTURE.md` — Full system documentation
+- `docs/PRIOR_ART.md` — Landscape analysis
+- `examples/` — Real-world verification examples
 
 ### Use Cases
 
-1. **Research papers** -- Cross-reference figures, tables, and text claims
-2. **Business documents** -- Flag unmarked projections and assumptions
-3. **Technical specs** -- Identify inconsistencies before review
-4. **RAG knowledge bases** -- Pre-ingestion quality gate
+1. **Research papers** — Cross-reference figures, tables, and text claims
+2. **Business documents** — Flag unmarked projections and assumptions
+3. **Technical specs** — Identify inconsistencies before review
+4. **RAG knowledge bases** — Pre-ingestion quality gate
 
 ### Limitations
 
@@ -60,7 +61,56 @@ Clarity Gate development follows a phased approach, starting with the highest-va
 
 ---
 
-## Phase 2: External Verification Hooks (Planned)
+## Phase 2: npm/PyPI Validators (Planned)
+
+### Goal
+
+Provide programmatic validators for CI/CD integration.
+
+### What's Planned
+
+| Component | Status | Description |
+|-----------|--------|-------------|
+| Unified Format Specification | ✅ v2.0 | Single spec for CGD/SOT |
+| Procedures Documentation | ✅ v1.0 | Verification workflows |
+| clarity-gate package | 🔜 Planned | Unified validator (npm/PyPI) |
+| agentskills.io compliance | ✅ Ready | YAML frontmatter, marketplace.json |
+
+### Specification Suite v2.0 (Ready)
+
+| Document | Purpose |
+|----------|---------|
+| [CLARITY_GATE_FORMAT_SPEC.md](CLARITY_GATE_FORMAT_SPEC.md) | Unified format specification |
+| [CLARITY_GATE_PROCEDURES.md](CLARITY_GATE_PROCEDURES.md) | Verification procedures |
+
+### Planned Package
+
+| Package | npm | PyPI | Purpose |
+|---------|-----|------|---------|
+| clarity-gate | 🔜 Planned | 🔜 Planned | Unified validator for CGD files |
+
+### Placeholder Packages (Namespace Reserved)
+
+| Package | npm | PyPI | Purpose |
+|---------|-----|------|---------|
+| cgd-creator | v0.0.1 | v0.0.1 | Future: CGD generation |
+| sot-creator | v0.0.1 | v0.0.1 | Future: SOT generation |
+| cgd-generator | v0.0.1 | v0.0.1 | Future: Batch generation |
+| sot-generator | v0.0.1 | v0.0.1 | Future: Batch generation |
+| memory-trail | v0.0.1 | v0.0.1 | Future: Decision tracking |
+
+### agentskills.io Compliance (Ready)
+
+| Component | Status | Location |
+|-----------|--------|----------|
+| YAML frontmatter | ✅ Ready | `skills/clarity-gate/SKILL.md` |
+| marketplace.json | ✅ Ready | `.claude-plugin/marketplace.json` |
+| AGENTS.md | ✅ Ready | Repository root |
+| Build scripts | ✅ Ready | `scripts/build-skill.sh`, `scripts/build-skill.ps1` |
+
+---
+
+## Phase 3: External Verification Hooks (Planned)
 
 ### Goal
 
@@ -114,11 +164,11 @@ class ConnectorRegistry:
 
 ### Timeline
 
-**Estimated:** Q1-Q2 2026 (dependent on Phase 1 adoption and feedback)
+**Target:** Q2-Q3 2026 *(estimated, dependent on Phase 2 completion and feedback)*
 
 ---
 
-## Phase 3: Confidence Scoring & HITL Optimization (Planned)
+## Phase 4: Confidence Scoring & HITL Optimization (Planned)
 
 ### Goal
 
@@ -169,7 +219,7 @@ Phase 3 Target:
 
 ### Timeline
 
-**Estimated:** Q3-Q4 2026 (dependent on Phase 2 completion and data collection)
+**Target:** Q4 2026 *(estimated, dependent on Phase 3 completion and data collection)*
 
 ---
 
@@ -179,18 +229,20 @@ Phase 3 Target:
 
 | Platform | Status | Notes |
 |----------|--------|-------|
-| Claude Desktop | ✅ Ready | Via SKILL.md |
-| Claude Code | ✅ Ready | Via SKILL.md |
+| Claude Desktop | ✅ Ready | Via `skills/clarity-gate/SKILL.md` |
+| Claude Code | ✅ Ready | Via `skills/clarity-gate/SKILL.md` |
 | Manual checklist | ✅ Ready | Via documentation |
+| agentskills.io | ✅ Ready | Marketplace-compliant |
 
 ### Planned
 
 | Platform | Phase | Notes |
 |----------|-------|-------|
-| LlamaIndex | Phase 2 | Custom retriever/checker component |
-| LangChain | Phase 2 | Tool integration |
-| Python package | Phase 2 | `pip install clarity-gate` |
-| REST API | Phase 3 | Standalone service deployment |
+| npm | Phase 2 | `npm install clarity-gate` |
+| PyPI | Phase 2 | `pip install clarity-gate` |
+| LlamaIndex | Phase 3 | Custom retriever/checker component |
+| LangChain | Phase 3 | Tool integration |
+| REST API | Phase 4 | Standalone service deployment |
 
 ### LlamaIndex Integration (Planned)
 
@@ -233,16 +285,16 @@ clarity_gate_tool = Tool(
 
 ### Phase 1 Contributions Welcome
 
-- **Prior art discoveries** -- Open-source pre-ingestion gates we missed?
-- **Verification point feedback** -- Are the 9 points the right focus?
-- **Real-world examples** -- Documents that expose edge cases
-- **Documentation improvements** -- Clarity and completeness
+- **Prior art discoveries** — Open-source pre-ingestion gates we missed?
+- **Verification point feedback** — Are the 9 points the right focus?
+- **Real-world examples** — Documents that expose edge cases
+- **Documentation improvements** — Clarity and completeness
 
 ### Phase 2 Contributions Welcome
 
-- **Connector implementations** -- Git, metrics, CRM integrations
-- **API design feedback** -- Interface usability
-- **Security review** -- External connection risks
+- **Connector implementations** — Git, metrics, CRM integrations
+- **API design feedback** — Interface usability
+- **Security review** — External connection risks
 
 ### How to Contribute
 
@@ -257,28 +309,45 @@ clarity_gate_tool = Tool(
 
 ### Phase 1
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| GitHub stars | 100+ | GitHub |
-| Active users | 50+ | Download/usage tracking |
-| Issues/feedback | 20+ | GitHub issues |
-| Real-world examples | 5+ | Contributed examples |
+| Metric | Target *(goal)* | Measurement |
+|--------|-----------------|-------------|
+| GitHub stars | 100+ *(target)* | GitHub |
+| Active users | 50+ *(target)* | Download/usage tracking |
+| Issues/feedback | 20+ *(target)* | GitHub issues |
+| Real-world examples | 5+ *(target)* | Contributed examples |
 
 ### Phase 2
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Connector implementations | 3+ | Community contributions |
-| Integration usage | 25+ | Package downloads |
-| HITL efficiency | >90% auto-pass | User reports |
+| Metric | Target *(goal)* | Measurement |
+|--------|-----------------|-------------|
+| npm package published | 1 *(target)* | npm registry |
+| PyPI package published | 1 *(target)* | PyPI registry |
+| CI/CD example | 1+ *(target)* | GitHub Actions workflow |
 
 ### Phase 3
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| Confidence accuracy | >85% | Validated against HITL decisions |
-| HITL reduction | >50% vs Phase 1 | Before/after comparison |
-| Enterprise adoption | 2+ | Case studies |
+| Metric | Target *(goal)* | Measurement |
+|--------|-----------------|-------------|
+| Connector implementations | 3+ *(target)* | Community contributions |
+| Integration usage | 25+ *(target)* | Package downloads |
+| HITL efficiency | >90% auto-pass *(target)* | User reports |
+
+### Phase 4
+
+| Metric | Target *(goal)* | Measurement |
+|--------|-----------------|-------------|
+| Confidence accuracy | >85% *(target)* | Validated against HITL decisions |
+| HITL reduction | >50% vs Phase 1 *(target)* | Before/after comparison |
+| Enterprise adoption | 2+ *(target)* | Case studies |
+
+---
+
+## Related Documents
+
+- [ARCHITECTURE.md](ARCHITECTURE.md) — Full system documentation
+- [CLARITY_GATE_FORMAT_SPEC.md](CLARITY_GATE_FORMAT_SPEC.md) — Unified format specification (v2.0)
+- [CLARITY_GATE_PROCEDURES.md](CLARITY_GATE_PROCEDURES.md) — Verification procedures
+- [PRIOR_ART.md](PRIOR_ART.md) — Landscape of existing systems
 
 ---
 
@@ -286,6 +355,8 @@ clarity_gate_tool = Tool(
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.4 | 2026-01-13 | Renumbered phases: npm/PyPI validators now Phase 2, external hooks Phase 3, confidence scoring Phase 4 |
+| 1.3 | 2026-01-12 | Added Phase 1.5 (specs & packages), updated integrations to Current |
 | 1.2 | 2025-12-31 | Updated for v1.6 (Two-Round HITL) |
 | 1.1 | 2025-12-28 | Updated for v1.5 (9-point system) |
 | 1.0 | 2025-12-21 | Initial roadmap |

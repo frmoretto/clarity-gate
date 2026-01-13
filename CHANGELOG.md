@@ -1,0 +1,78 @@
+# Changelog
+
+All notable changes to Clarity Gate specifications and tools.
+
+Format based on [Keep a Changelog](https://keepachangelog.com/).
+
+---
+
+## Specification Documents
+
+| Document | Current | Description |
+|----------|---------|-------------|
+| [CLARITY_GATE_FORMAT_SPEC.md](./docs/CLARITY_GATE_FORMAT_SPEC.md) | 2.0 | Unified format specification |
+| [CLARITY_GATE_PROCEDURES.md](./docs/CLARITY_GATE_PROCEDURES.md) | 1.0 | Verification procedures |
+
+---
+
+## [2.0] - January 2026
+
+**BREAKING CHANGE:** Unified CGD/SOT format.
+
+### Format Unification
+- **Single file extension:** `.cgd.md` for everything (`.sot.md` deprecated)
+- **SOT = CGD + tier: block:** SOT is now a CGD with optional `tier:` block in YAML frontmatter
+- **One validator:** Single `clarity-gate` package handles both formats
+- **promote/demote commands:** Add/remove `tier:` block instead of format conversion
+
+### Key Changes
+- Unified spec: `CLARITY_GATE_FORMAT_SPEC.md` replaces 4-file suite
+- New procedures doc: `CLARITY_GATE_PROCEDURES.md` for workflows
+- `tier.queue` and `tier.claims` for systematic claim processing
+- Claim IDs enable tracking across verification rounds
+
+### Breaking Changes
+- `.sot.md` extension deprecated (use `.cgd.md`)
+- Separate validators (`sot-validator`, `cgd-validator`) deprecated
+- 4-file spec suite archived (CGD_FORMAT, SOT_FORMAT, VALIDATOR_REFERENCE, VALIDATOR_IMPL_GUIDE)
+
+### Migration
+- Rename `.sot.md` files to `.cgd.md`
+- Add `tier:` block to YAML frontmatter for SOT behavior
+- Use `clarity-gate` package instead of separate validators
+
+> **Note:** v1.1 and v1.2 were internal development iterations (Jan 10-12, 2026) that were never publicly released. See archive for details.
+
+---
+
+## [1.0] - November 2025
+
+- Initial specification as FILE_FORMAT_SPEC.md
+- Separate `.cgd.md` and `.sot.md` formats
+- Published as npm/PyPI packages v0.1.1
+- Basic validation rules
+
+---
+
+## Validator Package
+
+| Package | npm | PyPI | Spec Version |
+|---------|-----|------|--------------|
+| clarity-gate | [npm](https://www.npmjs.com/package/clarity-gate) | [PyPI](https://pypi.org/project/clarity-gate/) | 2.0 |
+
+> **Deprecated:** `sot-validator`, `cgd-validator`, `sot-verify`, `cgd-verify` are superseded by the unified `clarity-gate` package.
+
+---
+
+## SKILL.md Versions
+
+| Version | Date | Key Changes |
+|---------|------|-------------|
+| v2.0.0 | Jan 13, 2026 | Unified format spec v2.0, single `.cgd.md` extension |
+| v1.6 | Dec 31, 2025 | Two-Round HITL (Round A + Round B) |
+| v1.5 | Dec 28, 2025 | Points 8-9: Temporal Coherence, Externally Verifiable Claims |
+| v1.4 | Dec 23, 2025 | Annotation offer + CGD output mode |
+| v1.3 | Dec 2025 | Restructured into Epistemic (1-4) + Data Quality (5-7) |
+| v1.2 | Dec 2025 | Added Source of Truth Template |
+| v1.1 | Dec 2025 | Added HITL Fact Verification (MANDATORY) |
+| v1.0 | Nov 2025 | Initial release with 6-point verification |

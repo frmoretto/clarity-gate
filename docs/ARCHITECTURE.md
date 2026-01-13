@@ -1,7 +1,7 @@
 # Clarity Gate Architecture
 
-**Version:** 1.6
-**Last Updated:** 2025-12-31
+**Version:** 2.0
+**Last Updated:** 2026-01-13
 
 ---
 
@@ -482,7 +482,7 @@ HITL Fact Verification is **MANDATORY** before declaring PASS. The human must:
 
 ### As Claude Skill
 
-Primary implementation. See [SKILL.md](../SKILL.md).
+Primary implementation. See [SKILL.md](../skills/clarity-gate/SKILL.md).
 
 ### As LlamaIndex Component (Planned)
 
@@ -521,6 +521,14 @@ agent = create_agent(tools=tools)
 
 ## Related Documents
 
-- [SKILL.md](../SKILL.md) -- Claude skill implementation
-- [PRIOR_ART.md](PRIOR_ART.md) -- Landscape of existing systems
-- [ROADMAP.md](ROADMAP.md) -- Development phases
+- [SKILL.md](../skills/clarity-gate/SKILL.md) — Claude skill implementation (v2.0)
+- [CLARITY_GATE_FORMAT_SPEC.md](CLARITY_GATE_FORMAT_SPEC.md) — Unified format specification (v2.0)
+- [CLARITY_GATE_PROCEDURES.md](CLARITY_GATE_PROCEDURES.md) — Verification procedures
+- [PRIOR_ART.md](PRIOR_ART.md) — Landscape of existing systems
+- [ROADMAP.md](ROADMAP.md) — Development phases
+
+## Reference Implementation
+
+| Package | npm | PyPI | Status |
+|---------|-----|------|--------|
+| clarity-gate | [npm](https://www.npmjs.com/package/clarity-gate) | [PyPI](https://pypi.org/project/clarity-gate/) | v1.0.0 — validates v1.x spec; v2.0 update planned |

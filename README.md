@@ -1,6 +1,8 @@
-# Clarity Gate v1.6
+# Clarity Gate v2.0
 
-> **⚠️ NEW RELEASE:** Version 1.6 released (2025-12-31). Download the new [`clarity-gate.zip`](clarity-gate.zip) for Two-Round HITL verification — separating quick confirmation from real verification.
+> **⚠️ NEW RELEASE:** Version 2.0 released (2026-01-13). Unified CGD/SOT format with single `.cgd.md` extension. Breaking change from v1.0 — see [CHANGELOG](CHANGELOG.md).
+
+> ✅ **This README passed Clarity Gate verification** (2026-01-13, adversarial mode, Claude Opus 4.5)
 
 **Open-source pre-ingestion verification for epistemic quality in RAG systems.**
 
@@ -27,7 +29,7 @@ The model isn't hallucinating. It's faithfully representing what it was told.
 **Accuracy verification asks:** "Does this match the source?"  
 **Epistemic verification asks:** "Is this claim properly qualified?"
 
-Both matter. Accuracy verification has mature open-source tools. Epistemic verification has excellent detection systems (UnScientify, HedgeHog, BioScope), but, as far as I know, no open-source enforcement layer.
+Both matter. Accuracy verification has mature open-source tools. Epistemic verification has detection systems (UnScientify, HedgeHunter, BioScope), but at the date of 2.0 release (January 13th, 2026), I found no open-source pre-ingestion epistemic enforcement system (methodology: deep research conducted via multiple LLMs). Corrections welcome.
 
 Clarity Gate is a proposal for that layer.
 
@@ -45,7 +47,7 @@ Clarity Gate is an **open-source pre-ingestion verification system** for epistem
 | Component | Status |
 |-----------|--------|
 | Pre-ingestion gate pattern | ✅ Proven (Adlib, pharma QMS) |
-| Epistemic detection | ✅ Proven (UnScientify, HedgeHog) |
+| Epistemic detection | ✅ Proven (UnScientify, HedgeHunter) |
 | **Pre-ingestion epistemic enforcement** | ❌ Gap (to my knowledge) |
 | **Open-source accessibility** | ❌ Gap |
 
@@ -58,26 +60,60 @@ Clarity Gate is an **open-source pre-ingestion verification system** for epistem
 
 ---
 
+## When to Use Clarity Gate
+
+Most valuable when:
+
+- Your RAG corpus includes **drafts, docs, tickets, meeting notes**, or user-provided content
+- You care about **correctness** and want a verifiable ingestion gate
+- You need a practical **HITL loop** that scales beyond manual spot checks
+- You want **automated enforcement** of document quality before ingestion
+
+---
+
 ## Quick Start
 
-### Option 1: claude.ai / Claude Desktop
+### Option 1: Claude.ai (Web) — Skill Upload
 
-1. Download [`clarity-gate.zip`](clarity-gate.zip)
-2. Go to Settings → Features → Skills → Add
-3. Upload the zip file
+1. Download [`dist/clarity-gate.skill`](dist/clarity-gate.skill)
+2. Go to claude.ai → Settings → Features → Skills → Upload
+3. Upload the `.skill` file
 4. Ask Claude: *"Run clarity gate on this document"*
 
-### Option 2: Claude Code
+### Option 2: Claude Desktop
 
-1. Copy `SKILL.md` to your project's skills folder
-2. Claude Code will automatically detect and use it
-3. Ask Claude: *"Run clarity gate on this document"*
+Same as Option 1 — Claude Desktop uses the same skill format as claude.ai.
 
-### Option 3: Claude Projects
+### Option 3: Claude Code
 
-Add [`SKILL.md`](SKILL.md) to project knowledge. Claude will search it when needed, though Skills provide better integration.
+Clone the repo — Claude Code auto-detects skills in `.claude/skills/`:
 
-### Option 4: Manual / Other LLMs
+```bash
+git clone https://github.com/frmoretto/clarity-gate
+cd clarity-gate
+# Claude Code will automatically detect .claude/skills/clarity-gate/SKILL.md
+```
+
+Or copy `.claude/skills/clarity-gate/` to your project's `.claude/skills/` directory.
+
+Ask Claude: *"Run clarity gate on this document"*
+
+### Option 4: Claude Projects
+
+Add [`skills/clarity-gate/SKILL.md`](skills/clarity-gate/SKILL.md) to project knowledge. Claude will search it when needed, though Skills provide better integration.
+
+### Option 5: OpenAI Codex / GitHub Copilot
+
+Copy the canonical skill to the appropriate directory:
+
+| Platform | Location |
+|----------|----------|
+| OpenAI Codex | `.codex/skills/clarity-gate/SKILL.md` |
+| GitHub Copilot | `.github/skills/clarity-gate/SKILL.md` |
+
+Use [`skills/clarity-gate/SKILL.md`](skills/clarity-gate/SKILL.md) (agentskills.io format).
+
+### Option 6: Manual / Other LLMs
 
 Use the [9-point verification](docs/ARCHITECTURE.md#the-9-verification-points) as a manual review process.
 
@@ -85,48 +121,23 @@ For Cursor, Windsurf, or other AI tools, extract the 9 verification points into 
 
 ---
 
-## Validators (npm / PyPI)
+## Platform-Specific Skill Locations
 
-Validate `.sot` and `.cgd` files programmatically or in CI/CD pipelines:
+| Platform | Skill Location | Frontmatter Format |
+|----------|----------------|-------------------|
+| Claude.ai / Claude Desktop | `.claude/skills/clarity-gate/` | Minimal (`name`, `description` only) |
+| Claude Code | `.claude/skills/clarity-gate/` | Minimal |
+| OpenAI Codex | `.codex/skills/clarity-gate/` | agentskills.io (full) |
+| GitHub Copilot | `.github/skills/clarity-gate/` | agentskills.io (full) |
+| Canonical | `skills/clarity-gate/` | agentskills.io (full) |
 
-**npm:**
-```bash
-# Install
-npm install -g sot-validator cgd-validator
+Pre-built skill file: [`dist/clarity-gate.skill`](dist/clarity-gate.skill)
 
-# Or use directly
-npx sot-validator document.sot
-npx cgd-validator document.cgd
+---
 
-# CI/CD (quick pass/fail)
-npx sot-verify docs/*.sot
-npx cgd-verify docs/*.cgd
-```
+## Format Specification
 
-**PyPI:**
-```bash
-# Install
-pip install sot-validator cgd-validator
-
-# Validate
-sot-validator document.sot
-cgd-validator document.cgd
-
-# CI/CD (quick pass/fail)
-sot-verify docs/*.sot
-cgd-verify docs/*.cgd
-```
-
-**Packages:**
-
-| Package | npm | PyPI | Purpose |
-|---------|-----|------|--------|
-| sot-validator | [npm](https://www.npmjs.com/package/sot-validator) | [PyPI](https://pypi.org/project/sot-validator/) | Detailed validation with warnings |
-| sot-verify | [npm](https://www.npmjs.com/package/sot-verify) | [PyPI](https://pypi.org/project/sot-verify/) | Quick pass/fail for CI/CD |
-| cgd-validator | [npm](https://www.npmjs.com/package/cgd-validator) | [PyPI](https://pypi.org/project/cgd-validator/) | Detailed validation with warnings |
-| cgd-verify | [npm](https://www.npmjs.com/package/cgd-verify) | [PyPI](https://pypi.org/project/cgd-verify/) | Quick pass/fail for CI/CD |
-
-See [FILE_FORMAT_SPEC.md](docs/FILE_FORMAT_SPEC.md) for the complete `.sot` and `.cgd` format specification.
+See [CLARITY_GATE_FORMAT_SPEC.md](docs/CLARITY_GATE_FORMAT_SPEC.md) for the complete format specification (v2.0).
 
 ---
 
@@ -144,7 +155,23 @@ See [FILE_FORMAT_SPEC.md](docs/FILE_FORMAT_SPEC.md) for the complete `.sot` and 
 → Complete document with fixes applied inline (CGD)
 ```
 
-The annotated output is a **Clarity-Gated Document (CGD)**—research shows mid-tier LLMs handle CGDs with better abstention on ambiguous claims.
+The annotated output is a **Clarity-Gated Document (CGD)**.
+
+---
+
+## Workflow Overview
+
+```mermaid
+flowchart TD
+  A[Raw Docs<br>notes, PRDs, transcripts] --> B[process<br>add epistemic markers<br>compute document-sha256]
+  B --> C[CGD<br>safe for RAG ingestion]
+  C -->|optional| D[promote<br>add tier block]
+  D --> E[SOT<br>canonical + extractable]
+  C --> F[generate HITL queue<br>claim IDs + locations]
+  F --> G[Human review<br>confirm/reject]
+  G --> H[apply-hitl<br>transaction + checkpoint]
+  H --> C
+```
 
 ---
 
@@ -163,7 +190,7 @@ The annotated output is a **Clarity-Gated Document (CGD)**—research shows mid-
 6. **Implicit Causation** — Claims implying causation without evidence
 7. **Future State as Present** — Planned outcomes described as achieved
 
-### Verification Routing (v1.5+)
+### Verification Routing
 
 8. **Temporal Coherence** — Dates consistent with each other and with present
 9. **Externally Verifiable Claims** — Pricing, statistics, competitor claims flagged for verification
@@ -172,7 +199,7 @@ See [ARCHITECTURE.md](docs/ARCHITECTURE.md) for full details and examples.
 
 ---
 
-## Two-Round HITL Verification (New in v1.6)
+## Two-Round HITL Verification
 
 Different claims need different types of verification:
 
@@ -182,7 +209,7 @@ Different claims need different types of verification:
 | Human's own data | "Is this actually true?" | High (real verification) |
 | No source found | "Is this actually true?" | High (real verification) |
 
-**v1.6 separates these into two rounds:**
+**The system separates these into two rounds:**
 
 ### Round A: Derived Data Confirmation
 
@@ -193,8 +220,8 @@ Quick scan of claims from sources found in the current session:
 
 These claims came from sources found in this session:
 
-- o3 prices cut 80% June 2025 (OpenAI blog)
-- Opus 4.5 is $5/$25 (Anthropic pricing page)
+- [Specific claim from source A] (source link)
+- [Specific claim from source B] (source link)
 
 Reply "confirmed" or flag any I misread.
 ```
@@ -217,21 +244,20 @@ Full verification of claims needing actual checking:
 
 ## Verification Hierarchy
 
-```
-Claim Extracted --> Source of Truth Exists?
-                           |
-           +---------------+---------------+
-           YES                             NO
-           |                               |
-     Tier 1: Automated              Tier 2: HITL
-     Verification                   Two-Round Verification
-           |                               |
-     +-----+-----+                   Round A → Round B
-     |           |                         |
-   Tier 1A    Tier 1B               APPROVE/REJECT
-   Internal   External
-     |           |
-   PASS/BLOCK  PASS/BLOCK
+```mermaid
+flowchart TD
+    A[Claim Extracted] --> B{Source of Truth Exists?}
+    B -->|YES| C[Tier 1: Automated Verification]
+    B -->|NO| D[Tier 2: HITL Two-Round Verification]
+
+    C --> E[Tier 1A: Internal]
+    C --> F[Tier 1B: External]
+    E --> G[PASS / BLOCK]
+    F --> G
+
+    D --> H[Round A]
+    H --> I[Round B]
+    I --> J[APPROVE / REJECT]
 ```
 
 ### Tier 1A: Internal Consistency (Ready Now)
@@ -254,7 +280,7 @@ For claims verifiable against structured sources. **Users provide connectors.**
 
 The system detects *which* specific claims need human review AND *what kind of review* each needs.
 
-*Example: A 50-claim document might have 48 pass automated checks, with the remaining 2 split between Round A (quick confirmation) and Round B (real verification). (Illustrative example, not measured.)*
+*Example: Most claims in a document typically pass automated checks, with the remainder split between Round A (quick confirmation) and Round B (real verification). (Illustrative — actual ratios vary by document type.)*
 
 ---
 
@@ -262,7 +288,7 @@ The system detects *which* specific claims need human review AND *what kind of r
 
 ```
 Layer 4: Human Strategic Oversight
-Layer 3: AI Behavior Verification (PETRI, BLOOM, behavioral evals)
+Layer 3: AI Behavior Verification (behavioral evals, red-teaming)
 Layer 2: Input/Context Verification  <-- Clarity Gate
 Layer 1: Deterministic Boundaries (rate limits, guardrails)
 Layer 0: AI Execution
@@ -277,11 +303,11 @@ A perfectly aligned model (Layer 3) can confidently produce unsafe outputs from 
 Clarity Gate builds on proven patterns. See [PRIOR_ART.md](docs/PRIOR_ART.md) for the full landscape.
 
 **Enterprise Gates:** Adlib Software, Pharmaceutical QMS  
-**Epistemic Detection:** UnScientify, HedgeHog, FactBank  
+**Epistemic Detection:** UnScientify, HedgeHunter, FactBank  
 **Fact-Checking:** FEVER, ClaimBuster  
 **Post-Retrieval:** Self-RAG, RAGAS, TruLens
 
-**The opportunity:** Existing detection tools (UnScientify, HedgeHog, BioScope) excel at identifying uncertainty markers. Clarity Gate proposes a complementary enforcement layer that routes ambiguous claims to human review or marks them automatically. I believe these could work together. Community input on integration is welcome.
+**The opportunity:** Existing detection tools (UnScientify, HedgeHunter, BioScope) excel at identifying uncertainty markers. Clarity Gate proposes a complementary enforcement layer that routes ambiguous claims to human review or marks them automatically. I believe these could work together. Community input on integration is welcome.
 
 ---
 
@@ -293,7 +319,15 @@ This system checks whether claims are properly marked as uncertain — it cannot
 
 **Risk:** An LLM can hallucinate facts INTO a document, then "pass" Clarity Gate by adding source markers to false claims.
 
-**Mitigation:** Two-Round HITL verification is **mandatory** before declaring PASS. See [SKILL.md](SKILL.md) for the full protocol.
+**Mitigation:** Two-Round HITL verification is **mandatory** before declaring PASS. See [SKILL.md](skills/clarity-gate/SKILL.md) for the full protocol.
+
+---
+
+## Non-Goals (By Design)
+
+- Does **not** prove truth automatically — enforces correct labeling and verification workflow
+- Does **not** replace source citations — prevents epistemic category errors
+- Does **not** require a centralized database — file-first and Git-friendly
 
 ---
 
@@ -302,10 +336,11 @@ This system checks whether claims are properly marked as uncertain — it cannot
 | Phase | Status | Description |
 |-------|--------|-------------|
 | **Phase 1** | ✅ Ready | Internal consistency checks + Two-Round HITL + annotation (Claude skill) |
-| **Phase 2** | 🔜 Planned | External verification hooks (user connectors) |
-| **Phase 3** | 🔜 Planned | Confidence scoring for HITL optimization |
+| **Phase 2** | 🔜 Planned | npm/PyPI validators for CI/CD integration |
+| **Phase 3** | 🔜 Planned | External verification hooks (user connectors) |
+| **Phase 4** | 🔜 Planned | Confidence scoring for HITL optimization |
 
-See [ROADMAP.md](docs/ROADMAP.md) for details and timeline.
+See [ROADMAP.md](docs/ROADMAP.md) for details.
 
 ---
 
@@ -313,12 +348,13 @@ See [ROADMAP.md](docs/ROADMAP.md) for details and timeline.
 
 | Document | Description |
 |----------|-------------|
-| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full 9-point system, verification hierarchy, output format |
+| [CLARITY_GATE_FORMAT_SPEC.md](docs/CLARITY_GATE_FORMAT_SPEC.md) | Unified format specification (v2.0) |
+| [CLARITY_GATE_PROCEDURES.md](docs/CLARITY_GATE_PROCEDURES.md) | Verification procedures and workflows |
+| [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full 9-point system, verification hierarchy |
 | [PRIOR_ART.md](docs/PRIOR_ART.md) | Landscape of existing systems |
 | [ROADMAP.md](docs/ROADMAP.md) | Phase 1/2/3 development plan |
-| [SKILL.md](SKILL.md) | Claude skill implementation |
+| [SKILL.md](skills/clarity-gate/SKILL.md) | Claude skill implementation (v2.0) |
 | [examples/](examples/) | Real-world verification examples |
-| [docs/research/](docs/research/) | Project research documentation |
 
 ---
 

@@ -8,8 +8,21 @@ Thumbs.db
 *.swp
 *.swo
 
-# Archives
+# Archives (except built skill packages)
 *.zip
+!dist/*.skill
+
+# Build output
+dist/
 
 # Logs
 *.log
+
+# Node (if using npm packages locally)
+node_modules/
+
+# Python (if using pip packages locally)
+__pycache__/
+*.pyc
+.venv/
+venv/

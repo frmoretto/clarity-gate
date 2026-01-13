@@ -1,0 +1,46 @@
+{
+  "$schema": "https://claude.ai/schemas/plugin-manifest-v1.json",
+  "name": "clarity-gate",
+  "version": "2.0.0",
+  "description": "Pre-ingestion verification for epistemic quality in RAG systems. Ensures documents are properly qualified before entering knowledge bases.",
+  "author": "Francesco Marinoni Moretto",
+  "license": "CC-BY-4.0",
+  "repository": "https://github.com/frmoretto/clarity-gate",
+  "homepage": "https://github.com/frmoretto/clarity-gate",
+  "keywords": [
+    "clarity-gate",
+    "epistemic",
+    "verification",
+    "rag",
+    "hallucination",
+    "pre-ingestion",
+    "cgd",
+    "sot",
+    "document-quality",
+    "ai-safety"
+  ],
+  "skills": [
+    {
+      "name": "clarity-gate",
+      "path": "skills/clarity-gate/SKILL.md",
+      "triggers": [
+        "clarity gate",
+        "check for hallucination risks",
+        "can an LLM read this safely",
+        "review for equivocation",
+        "verify document clarity",
+        "pre-ingestion check",
+        "cgd verify",
+        "sot verify"
+      ]
+    }
+  ],
+  "specifications": {
+    "format": "docs/CLARITY_GATE_FORMAT_SPEC.md",
+    "procedures": "docs/CLARITY_GATE_PROCEDURES.md"
+  },
+  "compatibility": {
+    "claude-code": ">=1.0.0",
+    "claude-desktop": ">=1.0.0"
+  }
+}

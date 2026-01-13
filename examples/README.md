@@ -9,6 +9,7 @@ Real-world examples of Clarity Gate verification.
 | Example | Type | Document | Result |
 |---------|------|----------|--------|
 | [Biology Paper](biology-paper-example.md) | Tier 1A: Internal Consistency | Scientific paper (arXiv 2403.00001) | DISCREPANCY FOUND |
+| [Self-Verification Report](self-verification-report.md) | Full 9-Point Verification | This repository's documentation | 14/18 PASS, 2 NEEDS REVIEW |
 
 ---
 
