@@ -353,6 +353,7 @@ See [ROADMAP.md](docs/ROADMAP.md) for details.
 | [ARCHITECTURE.md](docs/ARCHITECTURE.md) | Full 9-point system, verification hierarchy |
 | [PRIOR_ART.md](docs/PRIOR_ART.md) | Landscape of existing systems |
 | [ROADMAP.md](docs/ROADMAP.md) | Phase 1/2/3 development plan |
+| [BENCHMARK_RESULTS.md](docs/research/BENCHMARK_RESULTS.md) | Empirical validation (+19-25% improvement for mid-tier models) |
 | [SKILL.md](skills/clarity-gate/SKILL.md) | Claude skill implementation (v2.0) |
 | [examples/](examples/) | Real-world verification examples |
 
