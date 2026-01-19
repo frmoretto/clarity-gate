@@ -1,4 +1,4 @@
-# Clarity Gate v2.0
+# Clarity Gate — Prevent LLMs from Misinterpreting Facts
 
 > **⚠️ NEW RELEASE:** Version 2.0 released (2026-01-13). Unified CGD/SOT format with single `.cgd.md` extension. Breaking change from v1.0 — see [CHANGELOG](CHANGELOG.md).
 
