@@ -11,7 +11,7 @@
 This document describes **HOW to use** Clarity Gate for pre-ingestion verification and CGD/SOT creation. For **WHAT the format is**, see [CLARITY_GATE_FORMAT_SPEC.md](CLARITY_GATE_FORMAT_SPEC.md).
 
 **Key distinction:**
-- **Format Specification** (v2.0) — Normative rules for file structure and validation
+- **Format Specification** (v2.1) — Normative rules for file structure and validation
 - **Procedures** (this doc) — Informative guidance on verification workflows
 
 ---

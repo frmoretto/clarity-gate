@@ -22,7 +22,7 @@ Read: skills/clarity-gate/SKILL.md
 
 | Document | Purpose | Location |
 |----------|---------|----------|
-| Format Spec | Unified CGD/SOT specification (v2.0) | `docs/CLARITY_GATE_FORMAT_SPEC.md` |
+| Format Spec | Unified CGD/SOT specification (v2.1) | `docs/CLARITY_GATE_FORMAT_SPEC.md` |
 | Procedures | Verification workflows | `docs/CLARITY_GATE_PROCEDURES.md` |
 
 ### 3. Trigger Phrases
@@ -40,14 +40,14 @@ Use any of these to activate Clarity Gate:
 ```
 clarity-gate/
 ├── skills/clarity-gate/      # Canonical skill (agentskills.io compliant)
-│   └── SKILL.md              # v2.0 skill definition
+│   └── SKILL.md              # v2.1 skill definition
 ├── .claude/skills/clarity-gate/  # Claude.ai format (metadata wrapper)
 │   └── SKILL.md
 ├── .codex/skills/clarity-gate/   # OpenAI Codex (agentskills.io format)
 │   └── SKILL.md
 ├── .github/skills/clarity-gate/  # GitHub Copilot (agentskills.io format)
 │   └── SKILL.md
-├── docs/                     # Specifications (v2.0)
+├── docs/                     # Specifications (v2.1)
 │   ├── CLARITY_GATE_FORMAT_SPEC.md   # Unified format spec
 │   ├── CLARITY_GATE_PROCEDURES.md    # Verification procedures
 │   ├── ARCHITECTURE.md       # 9-point verification system
@@ -88,7 +88,7 @@ Each platform directory contains a full copy of SKILL.md with platform-appropria
 |--------|-----------|---------|
 | CGD | `.cgd.md` | Clarity-Gated Document (unified format) |
 
-> **Note:** v2.0 uses a single `.cgd.md` extension. SOT is now a CGD with an optional `tier:` block in YAML frontmatter.
+> **Note:** v2.1 uses a single `.cgd.md` extension. SOT is now a CGD with an optional `tier:` block in YAML frontmatter.
 
 ### Two-Round HITL Verification
 
@@ -101,10 +101,10 @@ If building a validator, read:
 1. `docs/CLARITY_GATE_FORMAT_SPEC.md` - Complete format and rule definitions
 
 Validator packages:
-- npm: `clarity-gate` v1.0.0 — Validates v1.x spec (validation only); v2.0 update planned
-- PyPI: `clarity-gate` v1.0.0 — Validates v1.x spec (validation only); v2.0 update planned
+- npm: `clarity-gate` v1.0.0 — Validates v1.x spec (validation only); v2.1 update planned
+- PyPI: `clarity-gate` v1.0.0 — Validates v1.x spec (validation only); v2.1 update planned
 
-> **Note:** Separate `cgd-validator` and `sot-validator` packages are deprecated in v2.0.
+> **Note:** Separate `cgd-validator` and `sot-validator` packages are deprecated in v2.1.
 
 ## Related Projects
 

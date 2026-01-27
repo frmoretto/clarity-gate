@@ -10,8 +10,26 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 | Document | Current | Description |
 |----------|---------|-------------|
-| [CLARITY_GATE_FORMAT_SPEC.md](./docs/CLARITY_GATE_FORMAT_SPEC.md) | 2.0 | Unified format specification |
+| [CLARITY_GATE_FORMAT_SPEC.md](./docs/CLARITY_GATE_FORMAT_SPEC.md) | 2.1 | Unified format specification |
 | [CLARITY_GATE_PROCEDURES.md](./docs/CLARITY_GATE_PROCEDURES.md) | 1.0 | Verification procedures |
+
+---
+
+## [2.1] - January 2026
+
+**RFC-001 Applied:** Clarifications for HITL claim handling.
+
+### Added
+- **Claim Completion Status** — PENDING/VERIFIED determined by field presence (no explicit status field)
+- **Source Field Semantics** — Actionable source (PENDING) vs. what-was-found (VERIFIED)
+- **Claim ID Format Guidance** — Hash-based IDs preferred with collision analysis
+- **Body Structure Requirements** — HITL Verification Record section mandatory when claims exist
+- **New Validation Codes** — E-ST10, W-ST11, W-HC01-04, E-SC06
+- **Bundled Scripts** — `claim_id.py`, `document_hash.py` in skill
+
+### Updated
+- FORMAT_SPEC: v2.0 → v2.1
+- SKILL.md: v2.0.0 → v2.1.0
 
 ---
 
@@ -58,7 +76,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 | Package | npm | PyPI | Spec Version |
 |---------|-----|------|--------------|
-| clarity-gate | [npm](https://www.npmjs.com/package/clarity-gate) | [PyPI](https://pypi.org/project/clarity-gate/) | 2.0 |
+| clarity-gate | [npm](https://www.npmjs.com/package/clarity-gate) | [PyPI](https://pypi.org/project/clarity-gate/) | 2.1 |
 
 > **Deprecated:** `sot-validator`, `cgd-validator`, `sot-verify`, `cgd-verify` are superseded by the unified `clarity-gate` package.
 
@@ -68,6 +86,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| v2.1.0 | Jan 27, 2026 | RFC-001 clarifications, bundled scripts |
 | v2.0.0 | Jan 13, 2026 | Unified format spec v2.0, single `.cgd.md` extension |
 | v1.6 | Dec 31, 2025 | Two-Round HITL (Round A + Round B) |
 | v1.5 | Dec 28, 2025 | Points 8-9: Temporal Coherence, Externally Verifiable Claims |

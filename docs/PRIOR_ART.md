@@ -1,7 +1,7 @@
 # Clarity Gate Prior Art
 
-**Version:** 1.1  
-**Last Updated:** 2026-01-13
+**Version:** 1.2  
+**Last Updated:** 2026-01-27
 
 ---
 
@@ -320,6 +320,44 @@ These modern tools validate the gap Clarity Gate addresses:
 
 ---
 
+## Knowledge Engineering Frameworks
+
+### Semantica
+
+**URL:** github.com/Hawksight-AI/semantica  
+**Focus:** Semantic layer, knowledge graph construction  
+**Stage:** Post-extraction
+
+**Capabilities:**
+- Entity extraction and resolution
+- Multi-source conflict resolution
+- Knowledge graph construction
+- Credibility-weighted voting for conflicting values
+
+**Conflict handling example:**
+- Source A: `employee.name = "John Doe"`
+- Source B: `employee.name = "Jonathan Doe"`
+- Resolution: Credibility-weighted voting
+
+**Relationship to Clarity Gate:**
+
+Semantica addresses conflicts *between* extracted entities. Clarity Gate addresses epistemic quality *within* source documents:
+
+| Tool | Question | Example |
+|------|----------|---------|
+| Semantica | "Which value is correct?" | John vs Jonathan |
+| Clarity Gate | "Is this claim properly qualified?" | "Revenue will be $50M" (unmarked projection) |
+
+**Integration:** Clarity Gate runs *before* Semantica ingestion:
+
+```
+Raw Docs → Clarity Gate → CGD → Semantica → Knowledge Graph
+```
+
+**Status:** Open-source, active development (422+ stars as of Jan 2026)
+
+---
+
 ## Privacy & Security Pre-Ingestion
 
 ### Protecto.ai
@@ -431,4 +469,5 @@ Layer 0: AI Execution
 | Version | Date | Changes |
 |---------|------|---------|
 | 1.0 | 2025-12-21 | Initial prior art landscape |
-| 1.1 | 2026-01-05 | HedgeHog → HedgeHunter (corrected after Perplexity Deep Research revealed no NLP tool named "HedgeHog" exists). Added modern fact-checking tools (LOKI, FIRE, RagChecker, Veracity) with gap confirmation table. Added HedgePeer dataset. Added naming confusion note. |
+| 1.1 | 2026-01-05 | HedgeHog → HedgeHunter (corrected). Added modern fact-checking tools (LOKI, FIRE, RagChecker, Veracity). Added HedgePeer dataset. |
+| 1.2 | 2026-01-27 | Added Semantica (Knowledge Engineering Frameworks section) per RFC-003. |

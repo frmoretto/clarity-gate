@@ -1,6 +1,6 @@
 # Clarity Gate — Prevent LLMs from Misinterpreting Facts
 
-> **⚠️ NEW RELEASE:** Version 2.0 released (2026-01-13). Unified CGD/SOT format with single `.cgd.md` extension. Breaking change from v1.0 — see [CHANGELOG](CHANGELOG.md).
+> **⚠️ LATEST:** Version 2.1 released (2026-01-27). RFC-001 applied: claim status semantics, bundled scripts. See [CHANGELOG](CHANGELOG.md).
 
 > ✅ **This README passed Clarity Gate verification** (2026-01-13, adversarial mode, Claude Opus 4.5)
 
@@ -68,6 +68,20 @@ Most valuable when:
 - You care about **correctness** and want a verifiable ingestion gate
 - You need a practical **HITL loop** that scales beyond manual spot checks
 - You want **automated enforcement** of document quality before ingestion
+
+---
+
+## How Clarity Gate Differs from Knowledge Engineering Tools
+
+| Aspect | Semantica / LlamaIndex | Clarity Gate |
+|--------|------------------------|--------------|
+| **Stage** | Post-extraction | Pre-ingestion |
+| **Input** | Structured entities | Raw documents |
+| **Problem** | "Which value is correct?" | "Is this claim properly qualified?" |
+| **Output** | Resolved knowledge graph | Annotated document (CGD) |
+| **Conflict** | Multi-source disagreement | Unmarked projections/assumptions |
+
+**They're complementary:** Use Clarity Gate *before* Semantica/LlamaIndex.
 
 ---
 
