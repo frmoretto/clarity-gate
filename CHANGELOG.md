@@ -24,8 +24,9 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 - **Source Field Semantics** — Actionable source (PENDING) vs. what-was-found (VERIFIED)
 - **Claim ID Format Guidance** — Hash-based IDs preferred with collision analysis
 - **Body Structure Requirements** — HITL Verification Record section mandatory when claims exist
-- **New Validation Codes** — E-ST10, W-ST11, W-HC01-04, E-SC06
-- **Bundled Scripts** — `claim_id.py`, `document_hash.py` in skill
+- **New Validation Codes** — E-ST10, W-ST11, W-HC01-02, E-SC06 (FORMAT_SPEC); E-TB01-07 (SOT validation)
+- **Bundled Scripts** — `claim_id.py`, `document_hash.py` with full §2.2-2.4 canonicalization
+- **Validation Codes Reference** — Comprehensive table added to SKILL.md documenting all error/warning codes
 
 ### Updated
 - FORMAT_SPEC: v2.0 → v2.1
