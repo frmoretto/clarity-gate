@@ -15,6 +15,22 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 ---
 
+## [2.1.2] - February 2026
+
+### Fixed
+- **Documentation Consistency** — Standardized validation code notation from `W-HC01-02` to `W-HC01, W-HC02` across all documentation for 100% alignment with FORMAT_SPEC
+
+---
+
+## [2.1.1] - January 2026
+
+### Fixed
+- **Critical:** `document_hash.py` missing canonicalization algorithm (§2.2-2.4)
+- **Documentation:** Validation codes updated to match FORMAT_SPEC (W-HC01, W-HC02, E-SC06)
+- **Documentation:** Claim ID regex patterns specified per approach (hash/sequential/semantic)
+
+---
+
 ## [2.1] - January 2026
 
 **RFC-001 Applied:** Clarifications for HITL claim handling.
@@ -24,7 +40,7 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 - **Source Field Semantics** — Actionable source (PENDING) vs. what-was-found (VERIFIED)
 - **Claim ID Format Guidance** — Hash-based IDs preferred with collision analysis
 - **Body Structure Requirements** — HITL Verification Record section mandatory when claims exist
-- **New Validation Codes** — E-ST10, W-ST11, W-HC01-02, E-SC06 (FORMAT_SPEC); E-TB01-07 (SOT validation)
+- **New Validation Codes** — E-ST10, W-ST11, W-HC01, W-HC02, E-SC06 (FORMAT_SPEC); E-TB01-07 (SOT validation)
 - **Bundled Scripts** — `claim_id.py`, `document_hash.py` with full §2.2-2.4 canonicalization
 - **Validation Codes Reference** — Comprehensive table added to SKILL.md documenting all error/warning codes
 
@@ -87,6 +103,8 @@ Format based on [Keep a Changelog](https://keepachangelog.com/).
 
 | Version | Date | Key Changes |
 |---------|------|-------------|
+| v2.1.2 | Feb 2, 2026 | Documentation consistency (validation code notation) |
+| v2.1.1 | Jan 28, 2026 | Critical bugfixes (document_hash.py canonicalization) |
 | v2.1.0 | Jan 27, 2026 | RFC-001 clarifications, bundled scripts |
 | v2.0.0 | Jan 13, 2026 | Unified format spec v2.0, single `.cgd.md` extension |
 | v1.6 | Dec 31, 2025 | Two-Round HITL (Round A + Round B) |

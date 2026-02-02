@@ -49,7 +49,7 @@ spec_version: "2.1"
 | **Source Field Semantics** | Actionable source (PENDING) vs. what-was-found (VERIFIED) |
 | **Claim ID Format Guidance** | Hash-based IDs preferred, collision analysis for scale |
 | **Body Structure Requirements** | HITL Verification Record section mandatory when claims exist |
-| **New Validation Codes** | E-ST10, W-ST11, W-HC01-02, E-SC06 (FORMAT_SPEC); E-TB01-07 (SOT validation) |
+| **New Validation Codes** | E-ST10, W-ST11, W-HC01, W-HC02, E-SC06 (FORMAT_SPEC); E-TB01-07 (SOT validation) |
 | **Bundled Scripts** | `claim_id.py` and `document_hash.py` for deterministic computations |
 
 ---
@@ -654,7 +654,7 @@ Reply "confirmed" or flag any I misread.
 - **ADDED:** Source Field Semantics (actionable vs. what-was-found)
 - **ADDED:** Claim ID Format guidance with collision analysis
 - **ADDED:** Body Structure Requirements (HITL Verification Record mandatory when claims exist)
-- **ADDED:** New validation codes: E-ST10, W-ST11, W-HC01-02, E-SC06 (FORMAT_SPEC §1.2-1.3)
+- **ADDED:** New validation codes: E-ST10, W-ST11, W-HC01, W-HC02, E-SC06 (FORMAT_SPEC §1.2-1.3)
 - **ADDED:** Bundled scripts: `claim_id.py`, `document_hash.py`
 - **UPDATED:** References to FORMAT_SPEC v2.1
 - **UPDATED:** CGD output example to version 2.1
@@ -698,7 +698,7 @@ Reply "confirmed" or flag any I misread.
 
 ---
 
-**Version:** 2.1.0
+**Version:** 2.1.2
 **Spec Version:** 2.1
 **Author:** Francesco Marinoni Moretto
 **License:** CC-BY-4.0
