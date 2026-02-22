@@ -1,7 +1,7 @@
 ---
 # agentskills.io compliant frontmatter
 name: clarity-gate
-version: 2.1.0
+version: 2.1.2
 description: >
   Pre-ingestion verification for epistemic quality in RAG systems.
   Ensures documents are properly qualified before entering knowledge bases.
