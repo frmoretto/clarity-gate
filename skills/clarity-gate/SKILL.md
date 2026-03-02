@@ -1,7 +1,7 @@
 ---
 # agentskills.io compliant frontmatter
 name: clarity-gate
-version: 2.1.2
+version: 2.1.3
 description: >
   Pre-ingestion verification for epistemic quality in RAG systems.
   Ensures documents are properly qualified before entering knowledge bases.
@@ -649,6 +649,14 @@ Reply "confirmed" or flag any I misread.
 
 ## Changelog
 
+### v2.1.3 (2026-03-02)
+- **FIXED:** `document_hash.py` now implements full FORMAT_SPEC §2.1-2.4 compliance
+- **FIXED:** Fence-aware end marker detection (Quine Protection per §2.3/§8.5)
+- **FIXED:** All 4 deployment copies converged to single canonical implementation
+- **ADDED:** `canonicalize()` function: trailing whitespace stripping, newline collapsing, NFC normalization
+- **ADDED:** YAML-aware `document-sha256` removal with multiline continuation support (§2.2)
+- **ADDED:** Fence-tracking test vectors (7 new tests, 15 total)
+
 ### v2.1.0 (2026-01-27)
 - **ADDED:** Claim Completion Status semantics (PENDING/VERIFIED by field presence)
 - **ADDED:** Source Field Semantics (actionable vs. what-was-found)
@@ -698,7 +706,7 @@ Reply "confirmed" or flag any I misread.
 
 ---
 
-**Version:** 2.1.2
+**Version:** 2.1.3
 **Spec Version:** 2.1
 **Author:** Francesco Marinoni Moretto
 **License:** CC-BY-4.0

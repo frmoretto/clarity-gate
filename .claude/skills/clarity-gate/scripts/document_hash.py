@@ -2,7 +2,7 @@
 """
 Clarity Gate: Document Hash Computation
 
-Reference implementation per FORMAT_SPEC §2.2-2.4 (RFC-001).
+Reference implementation per FORMAT_SPEC §2.1-2.4, §2.3 (RFC-001).
 Computes SHA-256 hash excluding the document-sha256 line itself.
 
 Usage:
@@ -10,18 +10,18 @@ Usage:
     python document_hash.py --verify path/to/file.cgd.md
     python document_hash.py --test
 
-Normalization (CRITICAL for cross-platform consistency):
-    - BOM removed if present
-    - CRLF to LF (Windows compatibility)
-    - CR to LF (old Mac compatibility)
-    - Extract content between opening ---\n and <!-- CLARITY_GATE_END -->
-    - document-sha256 line excluded from hash computation (frontmatter only)
-    - Multiline YAML continuation handling
-    - Canonicalization per §2.4:
-      * Strip trailing whitespace per line
-      * Collapse 3+ consecutive newlines to 2
-      * Normalize final newline (exactly 1 LF)
-      * UTF-8 NFC normalization
+Algorithm per FORMAT_SPEC:
+    0. Pre-normalize: BOM removal, CRLF/CR to LF
+    1. Extract hash window: content between '---\\n' and '<!-- CLARITY_GATE_END -->'
+       - End marker detection uses fence-aware scanning (§2.3 Quine Protection)
+    2. Exclude document-sha256 line(s) from YAML frontmatter only
+       - Multiline YAML continuation handling (§2.2)
+    3. Canonicalize per §2.4:
+       - Strip trailing whitespace per line
+       - Collapse 3+ consecutive newlines to 2
+       - Normalize final newline (exactly 1 LF)
+       - UTF-8 NFC normalization
+    4. Compute SHA-256
 """
 
 import hashlib
@@ -58,6 +58,52 @@ def canonicalize(text: str) -> str:
     return text
 
 
+# Regex for fence opener/closer: 0-3 leading spaces, then 3+ backticks or tildes
+_FENCE_RE = re.compile(r'^( {0,3})(`{3,}|~{3,})')
+
+END_MARKER = '<!-- CLARITY_GATE_END -->'
+
+
+def find_end_marker(text: str) -> int:
+    """
+    Find position of first <!-- CLARITY_GATE_END --> outside fenced code blocks.
+
+    Per FORMAT_SPEC §2.3 (Quine Protection) and §8.5 fence-tracking:
+    - Fence opens on line starting with 3+ backticks/tildes (after 0-3 spaces)
+    - Fence closes on line with same character, equal or greater count
+    - Lines indented 4+ spaces do NOT open/close fences
+    - Info strings after opener are ignored
+
+    Returns: character offset of the marker.
+    Raises: ValueError if no valid marker found.
+    """
+    in_fence = False
+    fence_char = ''
+    fence_count = 0
+    offset = 0
+
+    for line in text.split('\n'):
+        if not in_fence:
+            marker_pos = line.find(END_MARKER)
+            if marker_pos != -1:
+                return offset + marker_pos
+
+        m = _FENCE_RE.match(line)
+        if m:
+            char = m.group(2)[0]
+            count = len(m.group(2))
+            if not in_fence:
+                in_fence = True
+                fence_char = char
+                fence_count = count
+            elif char == fence_char and count >= fence_count:
+                in_fence = False
+
+        offset += len(line) + 1  # +1 for the \n consumed by split
+
+    raise ValueError("No <!-- CLARITY_GATE_END --> found outside fenced code blocks")
+
+
 def compute_hash(filepath: str) -> str:
     """
     Compute SHA-256 hash of document per FORMAT_SPEC §2.2-2.4.
@@ -80,9 +126,10 @@ def compute_hash(filepath: str) -> str:
     working = working.replace('\r\n', '\n').replace('\r', '\n')
 
     # 1. Extract content between opening YAML delimiter and end marker
+    #    End marker uses fence-aware detection per §2.3 (Quine Protection)
     try:
         start = working.index('---\n') + len('---\n')
-        end = working.index('<!-- CLARITY_GATE_END -->')
+        end = find_end_marker(working)
         hashable = working[start:end]
     except ValueError as e:
         print(f"ERROR: Invalid CGD format - {e}")
@@ -218,7 +265,58 @@ def run_tests():
     assert canonicalize(cr.replace('\r', '\n')) == canonicalize(lf), "CR should normalize to LF"
     print("PASS: CR to LF")
 
-    print("\nPASS: All canonicalization tests passed")
+    print("\n=== Fence-Aware End Marker Tests (§2.3 Quine Protection) ===")
+
+    # Test 9: Simple marker detection (no fences)
+    simple = "some content\n<!-- CLARITY_GATE_END -->\nafter"
+    assert find_end_marker(simple) == simple.index(END_MARKER), \
+        "Simple end marker detection"
+    print("PASS: Simple end marker detection")
+
+    # Test 10: Marker inside backtick fence should be skipped
+    fenced = "before\n```\n<!-- CLARITY_GATE_END -->\n```\n<!-- CLARITY_GATE_END -->\nafter"
+    expected = fenced.rfind(END_MARKER)
+    assert find_end_marker(fenced) == expected, \
+        "Marker inside backtick fence should be skipped"
+    print("PASS: Marker inside backtick fence skipped")
+
+    # Test 11: Marker inside tilde fence should be skipped
+    tilde = "before\n~~~\n<!-- CLARITY_GATE_END -->\n~~~\n<!-- CLARITY_GATE_END -->\nafter"
+    expected = tilde.rfind(END_MARKER)
+    assert find_end_marker(tilde) == expected, \
+        "Marker inside tilde fence should be skipped"
+    print("PASS: Marker inside tilde fence skipped")
+
+    # Test 12: Longer fence — ``` does NOT close ````
+    long_fence = "````\n<!-- CLARITY_GATE_END -->\n```\n<!-- CLARITY_GATE_END -->\n````\n<!-- CLARITY_GATE_END -->"
+    expected = long_fence.rfind(END_MARKER)
+    assert find_end_marker(long_fence) == expected, \
+        "Shorter fence delimiter should not close longer fence"
+    print("PASS: Fence length tracking")
+
+    # Test 13: 4+ space indent does NOT open a fence
+    indented = "    ```\n<!-- CLARITY_GATE_END -->\nafter"
+    expected = indented.index(END_MARKER)
+    assert find_end_marker(indented) == expected, \
+        "4+ space indented line should not open fence"
+    print("PASS: Indented code block ignored")
+
+    # Test 14: Missing marker raises ValueError
+    try:
+        find_end_marker("no marker here")
+        assert False, "Should have raised ValueError"
+    except ValueError:
+        pass
+    print("PASS: Missing marker raises ValueError")
+
+    # Test 15: Backtick fence not closed by tilde fence
+    mixed = "```\n<!-- CLARITY_GATE_END -->\n~~~\n<!-- CLARITY_GATE_END -->\n```\n<!-- CLARITY_GATE_END -->"
+    expected = mixed.rfind(END_MARKER)
+    assert find_end_marker(mixed) == expected, \
+        "Tilde should not close backtick fence"
+    print("PASS: Mixed fence characters respected")
+
+    print("\nPASS: All tests passed")
 
 
 def main():
